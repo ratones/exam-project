@@ -1,0 +1,36 @@
+<dx-toolbar [items]="toolbarContent"> </dx-toolbar>
+<dx-drawer
+  [openedStateMode]="'shrink'"
+  [position]="'left'"
+  [revealMode]="'slide'"
+  template="template"
+  [(opened)]="isDrawerOpen"
+  [height]="400"
+  [closeOnOutsideClick]="true"
+>
+  <div *dxTemplate="let data of 'template'" style="width: 200px">
+    <dx-list
+      class="panel-list dx-theme-accent-as-background-color"
+      [dataSource]="navigationItems"
+      [hoverStateEnabled]="false"
+      [activeStateEnabled]="false"
+      [focusStateEnabled]="false"
+      (onItemClick)="onItemClick($event)"
+    >
+    </dx-list>
+  </div>
+  <div id="content" class="dx-theme-background-color">
+    <router-outlet></router-outlet>
+  </div>
+</dx-drawer>
+<!--<div class="app-container">-->
+<!--  <div class="app-menu">-->
+<!--  </div>-->
+<!--  <div class="app-content">-->
+<!--    <router-outlet></router-outlet>-->
+<!--  </div>-->
+<!--  <div class="app-footer">-->
+<!--    <span>copyright RAR-DTIC 2022 - {{getAppVersion()}}</span>-->
+<!--  </div>-->
+<!--</div>-->
+
