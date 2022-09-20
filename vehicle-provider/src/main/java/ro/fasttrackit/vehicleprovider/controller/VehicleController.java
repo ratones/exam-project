@@ -33,4 +33,9 @@ public class VehicleController {
     Vehicle updateVehicle(@PathVariable Integer id, @RequestBody Vehicle vehicle){
         return service.updateVehicle(id, vehicle);
     }
+
+    @DeleteMapping("{id}")
+    Vehicle deleteVehicle(@PathVariable Integer id){
+        return service.deleteVehicle(id);
+    }
 }

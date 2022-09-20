@@ -39,4 +39,10 @@ public class VehicleService {
         repository.save(exist);
         return exist;
     }
+
+    public Vehicle deleteVehicle(Integer id) {
+        Vehicle exist = repository.findById(id).orElseThrow(() -> new RuntimeException("could not find record with id=" + id));
+        repository.delete(exist);
+        return exist;
+    }
 }

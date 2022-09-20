@@ -1,1 +1,59 @@
-<p>vehicle-list works!</p>
+<div class="content-block">
+  <div class="dx-card responsive-paddings">
+    <dx-data-grid
+      #grid
+      id="vehicle-list"
+      keyExpr="id"
+      [dataSource]="vehicles"
+      [rowAlternationEnabled]="true"
+      [showBorders]="true"
+      [(selectedRowKeys)]="selectedRows"
+      (onSaved)="handleSaveVehicle($event)"
+    >
+    <dxo-search-panel
+      [visible]="true"
+      [highlightCaseSensitive]="true"
+    ></dxo-search-panel>
+    <dxo-selection mode="single"></dxo-selection>
+    <dxo-editing mode="popup" [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true">
+
+    </dxo-editing>
+    <dxi-column dataField="id" [visible]="false"></dxi-column>
+    <dxi-column dataField="vin"></dxi-column>
+    <dxi-column dataField="make"></dxi-column>
+    <dxi-column dataField="model"></dxi-column>
+    <dxi-column dataField="year"></dxi-column>
+    <dxi-column dataField="owner"></dxi-column>
+
+    <dxo-toolbar>
+      <dxi-item location="before">
+        <div *dxTemplate>
+          <dx-button
+            icon="refresh"
+            (onClick)="refreshData()"
+          >
+          </dx-button>
+        </div>
+      </dxi-item>
+      <dxi-item location="before">
+        <div *dxTemplate>
+          <span>Vehicle List</span>
+        </div>
+      </dxi-item>
+      <dxi-item name="addRowButton" location="after"></dxi-item>
+      <dxi-item location="after">
+        <div *dxTemplate>
+          <dx-button
+            [disabled]="selectedRows.length == 0"
+            icon="background"
+            text="View Orders"
+            (onClick)="viewOrders()"
+          >
+          </dx-button>
+        </div>
+      </dxi-item>
+      <dxi-item name="searchPanel"></dxi-item>
+    </dxo-toolbar>
+  </dx-data-grid>
+  </div>
+</div>
