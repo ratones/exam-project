@@ -24,7 +24,16 @@ public class OrderMapper implements IOrderMapper {
 
     @Override
     public OrderEntity toEntity(OrderDTO order) {
-        OrderEntity entity = orderRepository.findByOrderNo(order.getOrderNo());
+        OrderEntity entity = orderRepository.findByOrderNo(order.getOrderNo()).orElse(
+                OrderEntity.builder()
+                        .category(order.getCategory())
+                        .orderDate(order.getOrderDate())
+                        .orderNo(order.getOrderNo())
+                        .notes(order.getNotes())
+                        .status(order.getStatus())
+                        .vehicleId(order.getVehicleId())
+                        .build()
+        );
         entity.setDateCompleted(order.getOrderCompleted());
         entity.setStatus(order.getStatus());
         return entity;

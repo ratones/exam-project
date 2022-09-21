@@ -29,6 +29,11 @@ public class OrderController {
         return service.updateOrder(id, order);
     }
 
+    @PostMapping("send/{id}")
+    ServiceOrder sendOrder(@PathVariable Integer id, @RequestBody ServiceOrder order){
+        return service.sendOrder(id, order);
+    }
+
     @DeleteMapping("{id}")
     ServiceOrder deleteOrder(@PathVariable Integer id){
         return service.deleteOrder(id);

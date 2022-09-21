@@ -1,4 +1,5 @@
 <dx-data-grid
+  #grid
   *ngIf="vehicle; else emptylist"
   id="orders-list"
   keyExpr="id"
@@ -7,64 +8,120 @@
   [height]="getGridHeight() - 50"
   (onSaved)="handleSaveOrder($event)"
 >
-<dxo-search-panel
-      [visible]="true"
-      [highlightCaseSensitive]="true"
-    ></dxo-search-panel>
-    <dxo-editing mode="popup" [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true">
-      <dxo-popup
-        title="Add Service Order"
-        [showTitle]="true"
-        [width]="'400px'"
-        [height]="'500px'"
-      >
-      </dxo-popup>
-      <dxo-form>
-        <!-- editorType="dxDateBox" [disabled]="true" [editorOptions]="{displayFormat:'dd.MM.yyyy'}"
+  <dxo-search-panel
+    [visible]="true"
+    [highlightCaseSensitive]="true"
+  ></dxo-search-panel>
+  <dxo-editing
+    mode="popup"
+    [allowAdding]="true"
+    [allowUpdating]="true"
+    [allowDeleting]="true"
+  >
+    <dxo-popup
+      title="Add Service Order"
+      [showTitle]="true"
+      [width]="'400px'"
+      [height]="'500px'"
+      [toolbarItems]="[
+        {
+          widget: 'dxButton',
+          location: 'before',
+          options: {
+            text: 'Send'
+          },
+          toolbar: 'bottom',
+          onClick: sendOrder
+        },
+        {
+          name: 'save'
+        },
+        {
+          widget: 'dxButton',
+          location: 'after',
+          options: {
+            text: 'Save'
+          },
+          toolbar: 'bottom',
+          onClick: saveOrder
+        },
+        {
+          name: 'save'
+        },
+        {
+          widget: 'dxButton',
+          location: 'after',
+          options: {
+            text: 'Cancel'
+          },
+          toolbar: 'bottom',
+          onClick: cancelEdit
+        }
+      ]"
+    >
+    </dxo-popup>
+    <dxo-form>
+      <!-- editorType="dxDateBox" [disabled]="true" [editorOptions]="{displayFormat:'dd.MM.yyyy'}"
           editorType="dxTextArea" [colSpan]="3"
         -->
-        <dxi-item itemType="group" [colSpan]="2" [colCount]="1">
-          <dxi-item dataField="id" [label]="{text: 'Order no.'}" [disabled]="true"></dxi-item>
-          <dxi-item dataField="category">
-            <dxi-validation-rule type="required"></dxi-validation-rule>
-          </dxi-item>
-          <dxi-item dataField="orderDate" editorType="dxDateBox">
-            <dxi-validation-rule type="required"></dxi-validation-rule>
-          </dxi-item>
-          <dxi-item dataField="notes" editorType="dxTextArea"></dxi-item>
+      <dxi-item itemType="group" [colSpan]="2" [colCount]="1">
+        <dxi-item
+          dataField="id"
+          [label]="{ text: 'Order no.' }"
+          [disabled]="true"
+        ></dxi-item>
+        <dxi-item dataField="category">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
         </dxi-item>
-      </dxo-form>
-    </dxo-editing>
-    <dxi-column dataField="id" [visible]="false"></dxi-column>
-    <dxi-column dataField="category">
-      <dxo-lookup displayExpr="text" valueExpr="id" [dataSource]="[{id:'bodywork', text:'BodyWork'}, {id:'mechanic', text:'Mechanical'}, {id:'electric', text:'Electrical'}]"></dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="status">
-      <dxo-lookup displayExpr="text" valueExpr="id" [dataSource]="[{id:'open', text:'OPEN'}, {id:'closed', text:'CLOSED'}, {id:'vehicle_reception', text:'VEHICLE RECEPTION'}]"></dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="orderDate" dataType="date"></dxi-column>
-    <dxi-column dataField="dateCompleted" dataType="date"></dxi-column>
-    <dxi-column dataField="notes"></dxi-column>
+        <dxi-item dataField="orderDate" editorType="dxDateBox">
+          <dxi-validation-rule type="required"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="notes" editorType="dxTextArea"></dxi-item>
+      </dxi-item>
+    </dxo-form>
+  </dxo-editing>
+  <dxi-column dataField="id" [visible]="false"></dxi-column>
+  <dxi-column dataField="category">
+    <dxo-lookup
+      displayExpr="text"
+      valueExpr="id"
+      [dataSource]="[
+        { id: 'bodywork', text: 'BodyWork' },
+        { id: 'mechanic', text: 'Mechanical' },
+        { id: 'electric', text: 'Electrical' }
+      ]"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="status">
+    <dxo-lookup
+      displayExpr="text"
+      valueExpr="id"
+      [dataSource]="[
+        { id: 'open', text: 'OPEN' },
+        { id: 'closed', text: 'CLOSED' },
+        { id: 'sent', text: 'SENT' },
+        { id: 'partsOrdered', text: 'PARTS ORDERED' },
+        { id: 'vehicle_reception', text: 'VEHICLE RECEPTION' }
+      ]"
+    ></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="orderDate" dataType="date"></dxi-column>
+  <dxi-column dataField="dateCompleted" dataType="date"></dxi-column>
+  <dxi-column dataField="notes"></dxi-column>
 
-    <dxo-toolbar>
-      <dxi-item location="before">
-        <div *dxTemplate>
-          <dx-button
-            icon="refresh"
-            (onClick)="refreshData()"
-          >
-          </dx-button>
-        </div>
-      </dxi-item>
-      <dxi-item location="before">
-        <div *dxTemplate>
-          <span>Orders List for {{vehicle.vin}}</span>
-        </div>
-      </dxi-item>
-      <dxi-item name="addRowButton" location="after"></dxi-item>
-      <dxi-item name="searchPanel"></dxi-item>
-    </dxo-toolbar>
+  <dxo-toolbar>
+    <dxi-item location="before">
+      <div *dxTemplate>
+        <dx-button icon="refresh" (onClick)="refreshData()"> </dx-button>
+      </div>
+    </dxi-item>
+    <dxi-item location="before">
+      <div *dxTemplate>
+        <span>Orders List for {{ vehicle.vin }}</span>
+      </div>
+    </dxi-item>
+    <dxi-item name="addRowButton" location="after"></dxi-item>
+    <dxi-item name="searchPanel"></dxi-item>
+  </dxo-toolbar>
 </dx-data-grid>
-<ng-template #emptylist>
-  No vehicle selected
-</ng-template>
+<ng-template #emptylist> No vehicle selected </ng-template>

@@ -10,7 +10,8 @@ export interface VehicleOrder{
   status:string,
   dateCompleted:Date,
   notes:string
-  vehicle:Vehicle
+  vehicle:Vehicle,
+  isSent:boolean
 }
 
 @Injectable({
@@ -30,6 +31,10 @@ export class OrdersService {
 
   updateVehicleOrder(id:number,order:VehicleOrder){
     return this.http.put<VehicleOrder>(`orders/${id}`, order);
+  }
+
+  sendVehicleOrder(id:number,order:VehicleOrder){
+    return this.http.post<VehicleOrder>(`orders/send/${id}`, order);
   }
 
   deleteVehicleOrder(id:number){

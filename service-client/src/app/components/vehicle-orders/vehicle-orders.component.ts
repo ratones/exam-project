@@ -1,7 +1,8 @@
 import { Vehicle } from './../../services/vehicle.service';
 import { VehicleOrder, OrdersService } from './../../services/orders.service';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import notify from 'devextreme/ui/notify';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-vehicle-orders',
@@ -15,7 +16,14 @@ export class VehicleOrdersComponent implements OnInit, OnChanges {
 
   orders:VehicleOrder[] = [];
 
-  constructor(private service:OrdersService) { }
+  @ViewChild("grid") grid!:DxDataGridComponent
+  isSendingOrder!: boolean;
+
+  constructor(private service:OrdersService) {
+    this.sendOrder = this.sendOrder.bind(this)
+    this.saveOrder = this.saveOrder.bind(this)
+    this.cancelEdit = this.cancelEdit.bind(this)
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
       if(changes.vehicle){
@@ -37,8 +45,21 @@ export class VehicleOrdersComponent implements OnInit, OnChanges {
     })
   }
 
+  sendOrder(ev:any){
+    this.isSendingOrder = true;
+    this.grid.instance.saveEditData()
+  }
+
+  saveOrder(){
+    this.grid.instance.saveEditData()
+  }
+
+  cancelEdit(){
+    this.grid.instance.cancelEditData()
+  }
+
   handleSaveOrder(ev:any){
-    console.log(ev);
+    console.log(this.isSendingOrder);
     const operation = ev.changes[0] || null
     if(operation){
       switch(operation.type){
@@ -47,12 +68,21 @@ export class VehicleOrdersComponent implements OnInit, OnChanges {
           operation.data.vehicle = this.vehicle;
           this.service.addVehicleOrder(operation.data).subscribe(() => {
             notify("Record saved!", "success", 500);
+            this.refreshData()
           });
           break;
         case 'update':
-          this.service.updateVehicleOrder(operation.key,operation.data).subscribe(() => {
-            notify("Record saved!", "success", 500);
-          });
+          if(this.isSendingOrder){
+            this.service.sendVehicleOrder(operation.key,operation.data).subscribe(() => {
+              notify("Record saved!", "success", 500);
+              this.refreshData()
+            });
+          }else{
+            this.service.updateVehicleOrder(operation.key,operation.data).subscribe(() => {
+              notify("Record saved!", "success", 500);
+              this.refreshData()
+            });
+          }
           break;
         case 'remove':
           this.service.deleteVehicleOrder(operation.key).subscribe(() => {
@@ -61,6 +91,7 @@ export class VehicleOrdersComponent implements OnInit, OnChanges {
           break;
       }
     }
+    this.isSendingOrder = false
   }
 
 }
