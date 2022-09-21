@@ -16,4 +16,7 @@ docker exec -it mariadb mariadb --user root -pPassword123!
 create db
 create database vehicles;
 
+docker run -d --hostname my-autoserv-rabbit --name autoserv-rabbit -p 8082:15672 -p 5672:5672 rabbitmq:management
+
+
 

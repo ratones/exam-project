@@ -20,6 +20,19 @@ export class VehicleListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getGridHeight(){
+    return (window.innerHeight - 10) /2
+  }
+
+  getSelectedVehicle(){
+    if(this.selectedRows.length){
+     let v = this.vehicles.find(v => v.id === this.selectedRows[0]);
+     return v;
+    } else{
+       return null
+    }
+  }
+
   refreshData(){
     this.service.getVehicles().subscribe((data:any) => {
       this.vehicles = data.content;

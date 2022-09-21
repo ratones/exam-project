@@ -19,11 +19,13 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TokenInterceptor} from "./shared/services/token-interceptor";
 import {StringToDate} from "./shared/utils/string-to-date";
 import { VehicleListComponent } from './pages/vehicle-list/vehicle-list.component';
+import { VehicleOrdersComponent } from './components/vehicle-orders/vehicle-orders.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    VehicleListComponent
+    VehicleListComponent,
+    VehicleOrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +38,7 @@ import { VehicleListComponent } from './pages/vehicle-list/vehicle-list.componen
     DxFileUploaderModule,
     DxTextBoxModule,
     DxDataGridModule,
+    DxTextAreaModule,
     DxToolbarModule,
     DxSelectBoxModule,
     DxValidatorModule,

@@ -1,5 +1,5 @@
 <div class="content-block">
-  <div class="dx-card responsive-paddings">
+  <div class="dx-card responsive-paddings" [style.height.px]="getGridHeight()">
     <dx-data-grid
       #grid
       id="vehicle-list"
@@ -8,6 +8,7 @@
       [rowAlternationEnabled]="true"
       [showBorders]="true"
       [(selectedRowKeys)]="selectedRows"
+      [height]="getGridHeight() - 50"
       (onSaved)="handleSaveVehicle($event)"
     >
     <dxo-search-panel
@@ -16,7 +17,31 @@
     ></dxo-search-panel>
     <dxo-selection mode="single"></dxo-selection>
     <dxo-editing mode="popup" [allowAdding]="true" [allowUpdating]="true" [allowDeleting]="true">
-
+      <dxo-popup
+        title="Add Vehicle"
+        [showTitle]="true"
+        [width]="'400px'"
+        [height]="'500px'"
+      >
+      </dxo-popup>
+      <dxo-form>
+        <!-- editorType="dxDateBox" [disabled]="true" [editorOptions]="{displayFormat:'dd.MM.yyyy'}"
+          editorType="dxTextArea" [colSpan]="3"
+        -->
+        <dxi-item itemType="group" [colSpan]="2" [colCount]="1">
+          <dxi-item dataField="vin">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="make">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-item>
+          <dxi-item dataField="model"></dxi-item>
+          <dxi-item dataField="year"></dxi-item>
+          <dxi-item dataField="owner">
+            <dxi-validation-rule type="required"></dxi-validation-rule>
+          </dxi-item>
+        </dxi-item>
+      </dxo-form>
     </dxo-editing>
     <dxi-column dataField="id" [visible]="false"></dxi-column>
     <dxi-column dataField="vin"></dxi-column>
@@ -41,7 +66,7 @@
         </div>
       </dxi-item>
       <dxi-item name="addRowButton" location="after"></dxi-item>
-      <dxi-item location="after">
+      <!-- <dxi-item location="after">
         <div *dxTemplate>
           <dx-button
             [disabled]="selectedRows.length == 0"
@@ -51,9 +76,12 @@
           >
           </dx-button>
         </div>
-      </dxi-item>
+      </dxi-item> -->
       <dxi-item name="searchPanel"></dxi-item>
     </dxo-toolbar>
   </dx-data-grid>
+  </div>
+  <div class="dx-card responsive-paddings" [style.height.px]="getGridHeight()">
+    <app-vehicle-orders [vehicle]="getSelectedVehicle()"></app-vehicle-orders>
   </div>
 </div>

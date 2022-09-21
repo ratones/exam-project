@@ -19,7 +19,9 @@
 	</properties>
 	<modules>
 		<module>vehicle-provider</module>
-	</modules>
+		<module>vehicle-service</module>
+        <module>data-exchange</module>
+    </modules>
 	<dependencies>
 	</dependencies>
 
