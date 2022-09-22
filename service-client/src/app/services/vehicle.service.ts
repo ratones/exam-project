@@ -11,26 +11,30 @@ export interface Vehicle {
   owner:string
 }
 
+const BASE_URL = 'http://localhost:8081'
+
 @Injectable({
   providedIn: 'root'
 })
 export class VehicleService {
 
+
+
   constructor(private http:HttpClient) { }
 
   getVehicles():Observable<Vehicle[]>{
-    return this.http.get<Vehicle[]>('vehicles');
+    return this.http.get<Vehicle[]>(BASE_URL + '/vehicles');
   }
 
   insertVehicle(vehicle:Vehicle):Observable<Vehicle>{
-    return this.http.post<Vehicle>('vehicles', vehicle);
+    return this.http.post<Vehicle>(BASE_URL + '/vehicles', vehicle);
   }
 
   updateVehicle(key:number,vehicle:Vehicle):Observable<Vehicle>{
-    return this.http.put<Vehicle>(`vehicles/${key}`, vehicle);
+    return this.http.put<Vehicle>(`${BASE_URL}/vehicles/${key}`, vehicle);
   }
 
   removeVehicle(key:number):Observable<Vehicle>{
-    return this.http.delete<Vehicle>(`vehicles/${key}`);
+    return this.http.delete<Vehicle>(`${BASE_URL}/vehicles/${key}`);
   }
 }

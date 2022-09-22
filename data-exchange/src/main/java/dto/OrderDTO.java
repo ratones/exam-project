@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,4 +20,6 @@ public class OrderDTO {
     private Date orderCompleted;
     private String notes;
     private Integer vehicleId;
+    private String vehicleVin;
+    private List<String> deficiencies;
 }

@@ -27,12 +27,12 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private router: Router) {}
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     //request.url = `${config.devUrl}/${request.url}`
-    request = request.clone({
-      url:`${serverConfig.server[env]}/${request.url}`,
-      // setHeaders: {
-      //   'X-APIKEY': this.service.getAppUser()
-      // }
-    });
+    // request = request.clone({
+    //   url:`${serverConfig.server[env]}/${request.url}`,
+    //   // setHeaders: {
+    //   //   'X-APIKEY': this.service.getAppUser()
+    //   // }
+    // });
     return next.handle(request).pipe(tap(()=>{}, (err:any)=>{
       if (err instanceof HttpErrorResponse) {
         if (err.status !== 401) {

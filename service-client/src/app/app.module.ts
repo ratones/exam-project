@@ -13,19 +13,25 @@ import {
   DxNumberBoxModule, DxPopupModule, DxScrollViewModule,
   DxSelectBoxModule,
   DxTabPanelModule, DxTextAreaModule, DxTextBoxComponent, DxTextBoxModule, DxToolbarModule, DxTreeListModule, DxValidatorModule,
-  DxListModule, DxDrawerModule
+  DxListModule, DxDrawerModule, DxTreeViewModule
 } from "devextreme-angular";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {TokenInterceptor} from "./shared/services/token-interceptor";
 import {StringToDate} from "./shared/utils/string-to-date";
 import { VehicleListComponent } from './pages/vehicle-list/vehicle-list.component';
 import { VehicleOrdersComponent } from './components/vehicle-orders/vehicle-orders.component';
+import { OrderDeficienciesComponent } from './components/order-deficiencies/order-deficiencies.component';
+import { OrderListComponent } from './pages/order-list/order-list.component';
+import { OrderDetailsComponent } from './pages/order-details/order-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     VehicleListComponent,
-    VehicleOrdersComponent
+    VehicleOrdersComponent,
+    OrderDeficienciesComponent,
+    OrderListComponent,
+    OrderDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -44,14 +50,16 @@ import { VehicleOrdersComponent } from './components/vehicle-orders/vehicle-orde
     DxValidatorModule,
     DxCheckBoxModule,
     DxListModule,
-    DxDrawerModule
+    DxTreeViewModule,
+    DxDrawerModule,
+    DxFormModule
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: TokenInterceptor,
+    //   multi: true
+    // },
     StringToDate,
     AuthService,
     ScreenService,

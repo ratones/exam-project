@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
     @Bean
-    TopicExchange exchange() {
-        return new TopicExchange("app-exchange");
+    TopicExchange orderExchange() {
+        return new TopicExchange("order-exchange");
     }
 
     @Bean
@@ -21,12 +21,22 @@ public class RabbitConfig {
     }
 
     @Bean
-    Queue studentEvents() {
-        return new Queue("orders-events");
+    Queue serviceOrders() {
+        return new Queue("service-orders");
     }
 
     @Bean
-    Binding studentBinding(TopicExchange topicExchange, Queue studentEvent) {
-        return BindingBuilder.bind(studentEvent).to(topicExchange).with("orders");
+    Queue repairOrders() {
+        return new Queue("repair-orders");
+    }
+
+    @Bean
+    Binding sendBinding(TopicExchange orderExchange, Queue repairOrders) {
+        return BindingBuilder.bind(repairOrders).to(orderExchange).with("orders.repair");
+    }
+
+    @Bean
+    Binding receiveBinding(TopicExchange orderExchange, Queue serviceOrders) {
+        return BindingBuilder.bind(serviceOrders).to(orderExchange).with("orders.service");
     }
 }

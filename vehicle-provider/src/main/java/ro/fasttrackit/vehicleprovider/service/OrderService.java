@@ -3,9 +3,11 @@ package ro.fasttrackit.vehicleprovider.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.fasttrackit.vehicleprovider.message.MessageSender;
+import ro.fasttrackit.vehicleprovider.model.Deficiencies;
 import ro.fasttrackit.vehicleprovider.model.OrderStatus;
 import ro.fasttrackit.vehicleprovider.model.ServiceOrder;
 import ro.fasttrackit.vehicleprovider.model.Vehicle;
+import ro.fasttrackit.vehicleprovider.repository.DeficienciesRepository;
 import ro.fasttrackit.vehicleprovider.repository.ServiceOrderRepository;
 
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 public class OrderService {
 
     private final ServiceOrderRepository repository;
+    private final DeficienciesRepository deficienciesRepository;
     private final MessageSender sender;
     public List<ServiceOrder> getVehicleOrder(Integer id) {
         return repository.findByVehicleId(id);
@@ -45,5 +48,22 @@ public class OrderService {
         System.out.println(order);
         sender.sendOrderToService(order);
         return repository.save(order);
+    }
+
+    public List<Deficiencies> getOrderDeficiencies(Integer id) {
+        return deficienciesRepository.findByOrderId(id);
+    }
+
+    public Deficiencies insertDeficiency(Deficiencies deficiency) {
+        if(deficiency.getId() != null){
+            deficiency.setId(null);
+        }
+        return deficienciesRepository.save(deficiency);
+    }
+
+    public Deficiencies deleteDeficiency(Integer id) {
+        Deficiencies def = deficienciesRepository.findById(id).orElseThrow(() -> new RuntimeException("could not find record with id=" + id));
+        deficienciesRepository.deleteById(id);
+        return def;
     }
 }

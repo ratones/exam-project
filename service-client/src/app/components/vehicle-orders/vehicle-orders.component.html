@@ -6,6 +6,7 @@
   [dataSource]="orders"
   [showBorders]="true"
   [height]="getGridHeight() - 50"
+  (onEditingStart)="setCurrentOrder($event)"
   (onSaved)="handleSaveOrder($event)"
 >
   <dxo-search-panel
@@ -21,13 +22,14 @@
     <dxo-popup
       title="Add Service Order"
       [showTitle]="true"
-      [width]="'400px'"
+      [width]="'600px'"
       [height]="'500px'"
       [toolbarItems]="[
         {
           widget: 'dxButton',
           location: 'before',
           options: {
+            disabled:!editingOrder?.id,
             text: 'Send'
           },
           toolbar: 'bottom',
@@ -60,7 +62,7 @@
       ]"
     >
     </dxo-popup>
-    <dxo-form>
+    <dxo-form [colCount]="2">
       <!-- editorType="dxDateBox" [disabled]="true" [editorOptions]="{displayFormat:'dd.MM.yyyy'}"
           editorType="dxTextArea" [colSpan]="3"
         -->
@@ -87,8 +89,8 @@
       valueExpr="id"
       [dataSource]="[
         { id: 'bodywork', text: 'BodyWork' },
-        { id: 'mechanic', text: 'Mechanical' },
-        { id: 'electric', text: 'Electrical' }
+        { id: 'mechanical', text: 'Mechanical' },
+        { id: 'electrical', text: 'Electrical' }
       ]"
     ></dxo-lookup>
   </dxi-column>
@@ -96,19 +98,16 @@
     <dxo-lookup
       displayExpr="text"
       valueExpr="id"
-      [dataSource]="[
-        { id: 'open', text: 'OPEN' },
-        { id: 'closed', text: 'CLOSED' },
-        { id: 'sent', text: 'SENT' },
-        { id: 'partsOrdered', text: 'PARTS ORDERED' },
-        { id: 'vehicle_reception', text: 'VEHICLE RECEPTION' }
-      ]"
+      [dataSource]="statuses"
     ></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="orderDate" dataType="date"></dxi-column>
   <dxi-column dataField="dateCompleted" dataType="date"></dxi-column>
   <dxi-column dataField="notes"></dxi-column>
-
+  <dxi-column type="buttons" [width]="110">
+    <dxi-button name="edit" [visible]="isEditable"></dxi-button>
+    <dxi-button name="delete" [visible]="isEditable"></dxi-button>
+  </dxi-column>
   <dxo-toolbar>
     <dxi-item location="before">
       <div *dxTemplate>

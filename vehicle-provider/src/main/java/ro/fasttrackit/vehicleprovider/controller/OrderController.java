@@ -2,6 +2,7 @@ package ro.fasttrackit.vehicleprovider.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ro.fasttrackit.vehicleprovider.model.Deficiencies;
 import ro.fasttrackit.vehicleprovider.model.ServiceOrder;
 import ro.fasttrackit.vehicleprovider.service.OrderService;
 
@@ -37,5 +38,20 @@ public class OrderController {
     @DeleteMapping("{id}")
     ServiceOrder deleteOrder(@PathVariable Integer id){
         return service.deleteOrder(id);
+    }
+
+    @GetMapping("deficiencies/{id}")
+    List<Deficiencies> getOrderDeficiencies(@PathVariable Integer id){
+        return service.getOrderDeficiencies(id);
+    }
+
+    @PostMapping("deficiencies")
+    Deficiencies insertDeficiency(@RequestBody Deficiencies deficiency){
+        return service.insertDeficiency(deficiency);
+    }
+
+    @DeleteMapping("deficiencies/{id}")
+    Deficiencies deleteDeficiency(@PathVariable Integer id){
+        return service.deleteDeficiency(id);
     }
 }

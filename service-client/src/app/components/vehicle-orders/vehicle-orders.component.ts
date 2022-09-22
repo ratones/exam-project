@@ -1,5 +1,5 @@
 import { Vehicle } from './../../services/vehicle.service';
-import { VehicleOrder, OrdersService } from './../../services/orders.service';
+import { VehicleOrder, OrdersService, Deficiency } from './../../services/orders.service';
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import notify from 'devextreme/ui/notify';
 import { DxDataGridComponent } from 'devextreme-angular';
@@ -15,6 +15,18 @@ export class VehicleOrdersComponent implements OnInit, OnChanges {
   vehicle!:Vehicle | null | undefined;
 
   orders:VehicleOrder[] = [];
+
+  editingOrder!:VehicleOrder | null;
+  editingDeficiencies:Deficiency[] = []
+
+  statuses:any[] = [
+    { id: 'open', text: 'OPEN' },
+    { id: 'closed', text: 'CLOSED' },
+    { id: 'sent', text: 'SENT' },
+    { id: 'partsReceived', text: 'PARTS Received' },
+    { id: 'vehicleReceived', text: 'VEHICLE RECEPTION' },
+    { id: 'waitingMaterials', text: 'WAITING PARTS' },
+  ]
 
   @ViewChild("grid") grid!:DxDataGridComponent
   isSendingOrder!: boolean;
@@ -45,9 +57,25 @@ export class VehicleOrdersComponent implements OnInit, OnChanges {
     })
   }
 
+  setCurrentOrder(ev:any){
+    console.log(ev);
+    if(typeof ev.data.id != 'number') ev.data.id = null;
+    this.editingOrder = ev.data;
+  }
+
+  isEditable(e:any) {
+    return e.row.data.status == 'open';
+  }
+
   sendOrder(ev:any){
-    this.isSendingOrder = true;
-    this.grid.instance.saveEditData()
+    if(this.editingOrder){
+      this.service.sendVehicleOrder(this.editingOrder?.id, this.editingOrder).subscribe(() => {
+        notify("Record saved!", "success", 500);
+        this.refreshData()
+        this.cancelEdit()
+      });
+    }
+    //console.log(this.editingDeficiencies);
   }
 
   saveOrder(){
@@ -72,17 +100,10 @@ export class VehicleOrdersComponent implements OnInit, OnChanges {
           });
           break;
         case 'update':
-          if(this.isSendingOrder){
-            this.service.sendVehicleOrder(operation.key,operation.data).subscribe(() => {
-              notify("Record saved!", "success", 500);
-              this.refreshData()
-            });
-          }else{
             this.service.updateVehicleOrder(operation.key,operation.data).subscribe(() => {
               notify("Record saved!", "success", 500);
               this.refreshData()
             });
-          }
           break;
         case 'remove':
           this.service.deleteVehicleOrder(operation.key).subscribe(() => {

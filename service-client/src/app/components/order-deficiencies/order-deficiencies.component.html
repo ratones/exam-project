@@ -1,0 +1,6 @@
+Deficiencies
+<dx-button icon="add" (onClick)="addDeficiency()"></dx-button>
+<div *ngFor="let item of deficiencies" class="deficiency-form">
+    <dx-text-box [(value)]="item.description" width="85%"></dx-text-box>
+    <dx-button (onClick)="removeDeficiency(item)" icon="trash" type="danger"></dx-button>
+</div>

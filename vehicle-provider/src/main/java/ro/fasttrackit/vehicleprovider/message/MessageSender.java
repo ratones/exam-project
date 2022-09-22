@@ -12,6 +12,6 @@ public class MessageSender {
     private final RabbitTemplate rabbitTemplate;
     private final IOrderMapper mapper;
     public void sendOrderToService(ServiceOrder order){
-        rabbitTemplate.convertAndSend("app-exchange", "orders", mapper.toApi(order));
+        rabbitTemplate.convertAndSend("order-exchange", "orders.service", mapper.toApi(order));
     }
 }

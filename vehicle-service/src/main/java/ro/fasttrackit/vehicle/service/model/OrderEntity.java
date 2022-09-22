@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "orders")
 @Data
@@ -15,9 +16,11 @@ public class OrderEntity {
     private String id;
     private Integer orderNo;
     private Integer vehicleId;
+    private String vehicleVin;
     private String category;
     private Date dateCompleted;
     private String status;
     private Date orderDate;
     private String notes;
+    private List<MaterialsEntity> materials;
 }

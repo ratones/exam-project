@@ -1,0 +1,51 @@
+<div class="content-block">
+  <div class="dx-card responsive-paddings">
+    <h3>Order details</h3>
+    <div class="order-details">
+      <div class="dx-fieldset">
+        <div class="dx-fieldset-header">Order Info</div>
+        <div class="dx-field">
+          <div class="dx-field-label">Vehicle VIN:</div>
+          <div class="dx-field-value-static">{{order.vehicleVin }}</div>
+        </div>
+        <div class="dx-field">
+          <div class="dx-field-label">Order date</div>
+          <div class="dx-field-value-static">{{order.orderDate | date:'dd.MM.yyyy' }}</div>
+        </div>
+        <div class="dx-field">
+          <div class="dx-field-label">Order status</div>
+          <div class="dx-field-value-static">{{order.status | uppercase}}</div>
+        </div>
+        <div class="dx-field">
+          <div class="dx-field-label">Order notes</div>
+          <div class="dx-field-value-static">{{order.notes }}</div>
+        </div>
+        <dx-button type="default" text="Vehicle Received" [visible]="order.status == 'sent'" (onClick)="handleVehicleReceived()"></dx-button>
+      </div>
+      <div class="dx-fieldset" *ngIf="order.status != 'sent'">
+        <div class="dx-fieldset-header">Order Parts and Materials</div>
+        <dx-button type="primary" text="Add" (onClick)="addMaterials()" *ngIf="order.status == 'vehicleReceived'"></dx-button>
+        <div class="dx-field flex" *ngFor="let item of order.materials">
+          <dx-select-box class="dx-field-value" label="Category" labelMode="floating" [readOnly]="order.status == 'waitingMaterials'"  [(value)]="item.category" [dataSource]="['Body', 'Electrics','Mechanics']"></dx-select-box>
+          <dx-text-box class="dx-field-value" label="Name" labelMode="floating" [readOnly]="order.status == 'waitingMaterials'"  [(value)]="item.name"></dx-text-box>
+          <dx-text-box class="dx-field-value" label="Details" labelMode="floating" [readOnly]="order.status == 'waitingMaterials'" [(value)]="item.details"></dx-text-box>
+          <dx-button type="danger" icon="trash" (onClick)="deleteMaterials(item)" *ngIf="order.status == 'vehicleReceived'"></dx-button>
+        </div>
+        <dx-button type="primary" text="Save" *ngIf="order.materials && order.materials.length > 0 && order.status == 'vehicleReceived'" (onClick)="saveMaterialsOrder()"></dx-button>
+        <dx-button type="default" text="Send" *ngIf="order.materials && order.materials.length > 0 && order.status == 'vehicleReceived'" (onClick)="sendMaterialsOrder()"></dx-button>
+      </div>
+      <div class="dx-fieldset" id="notes-container">
+        <div class="dx-fieldset-header">Field Set with Custom Value Width</div>
+        <div class="dx-field">
+          <div class="dx-field-label">Notes</div>
+          <dx-text-area
+            class="dx-field-value"
+            [height]="80"
+            value="Kevin is our hard-working shipping manager and has been helping that department work like clockwork for 18 months. When not in the office, he is usually on the basketball court playing pick-up games."
+          >
+          </dx-text-area>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

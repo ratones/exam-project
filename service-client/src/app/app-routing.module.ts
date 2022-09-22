@@ -1,3 +1,5 @@
+import { OrderDetailsComponent } from './pages/order-details/order-details.component';
+import { OrderListComponent } from './pages/order-list/order-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from './shared/services';
@@ -18,6 +20,14 @@ const routes: Routes = [
   {
     path:'vehicles',
     component: VehicleListComponent
+  },
+  {
+    path:'orders/:type',
+    component:OrderListComponent
+  },
+  {
+    path:'order/:id',
+    component:OrderDetailsComponent
   },
   {
     path: '**',

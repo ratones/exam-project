@@ -9,15 +9,17 @@
   [closeOnOutsideClick]="true"
 >
   <div *dxTemplate="let data of 'template'" style="width: 200px">
-    <dx-list
+    <dx-tree-view
       class="panel-list dx-theme-accent-as-background-color"
       [dataSource]="navigationItems"
       [hoverStateEnabled]="false"
       [activeStateEnabled]="false"
       [focusStateEnabled]="false"
+      expandEvent="click"
+      [expandAllEnabled]="false"
       (onItemClick)="onItemClick($event)"
     >
-    </dx-list>
+    </dx-tree-view>
   </div>
   <div id="content" class="dx-theme-background-color">
     <router-outlet></router-outlet>

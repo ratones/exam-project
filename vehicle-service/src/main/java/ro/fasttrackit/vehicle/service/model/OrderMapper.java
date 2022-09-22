@@ -18,6 +18,7 @@ public class OrderMapper implements IOrderMapper {
                 .category(order.getCategory())
                 .status(order.getStatus())
                 .vehicleId(order.getVehicleId())
+                .vehicleVin(order.getVehicleVin())
                 .notes(order.getNotes())
                 .build();
     }
@@ -32,6 +33,7 @@ public class OrderMapper implements IOrderMapper {
                         .notes(order.getNotes())
                         .status(order.getStatus())
                         .vehicleId(order.getVehicleId())
+                        .vehicleVin(order.getVehicleVin())
                         .build()
         );
         entity.setDateCompleted(order.getOrderCompleted());

@@ -14,6 +14,14 @@ export interface VehicleOrder{
   isSent:boolean
 }
 
+export interface Deficiency{
+  id?:number,
+  description:string,
+  order:VehicleOrder|null
+}
+
+const BASE_URL = 'http://localhost:8081'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,23 +30,27 @@ export class OrdersService {
   constructor(private http:HttpClient) { }
 
   getVehicleOrders(vehicleId:number):Observable<VehicleOrder[]>{
-    return this.http.get<VehicleOrder[]>(`orders/byVehicleId/${vehicleId}`)
+    return this.http.get<VehicleOrder[]>(`${BASE_URL}/orders/byVehicleId/${vehicleId}`)
   }
 
   addVehicleOrder(order:VehicleOrder){
-    return this.http.post<VehicleOrder>("orders", order);
+    return this.http.post<VehicleOrder>(BASE_URL + "/orders", order);
   }
 
   updateVehicleOrder(id:number,order:VehicleOrder){
-    return this.http.put<VehicleOrder>(`orders/${id}`, order);
+    return this.http.put<VehicleOrder>(`${BASE_URL}/orders/${id}`, order);
   }
 
   sendVehicleOrder(id:number,order:VehicleOrder){
-    return this.http.post<VehicleOrder>(`orders/send/${id}`, order);
+    return this.http.post<VehicleOrder>(`${BASE_URL}/orders/send/${id}`, order);
   }
 
   deleteVehicleOrder(id:number){
-    return this.http.delete<VehicleOrder>(`orders/${id}`);
+    return this.http.delete<VehicleOrder>(`${BASE_URL}/orders/${id}`);
+  }
+
+  getOrderDeficiencies(orderId:number):Observable<Deficiency[]>{
+    return this.http.get<Deficiency[]>(`${BASE_URL}/orders/deficiencies/${orderId}`)
   }
 
 }
