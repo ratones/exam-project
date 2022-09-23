@@ -31,6 +31,16 @@ public class RabbitConfig {
     }
 
     @Bean
+    Queue materialServOrders() {
+        return new Queue("material-serv-orders");
+    }
+
+    @Bean
+    Queue materialShopOrders() {
+        return new Queue("material-shop-orders");
+    }
+
+    @Bean
     Binding sendBinding(TopicExchange orderExchange, Queue repairOrders) {
         return BindingBuilder.bind(repairOrders).to(orderExchange).with("orders.repair");
     }
@@ -38,5 +48,15 @@ public class RabbitConfig {
     @Bean
     Binding receiveBinding(TopicExchange orderExchange, Queue serviceOrders) {
         return BindingBuilder.bind(serviceOrders).to(orderExchange).with("orders.service");
+    }
+
+    @Bean
+    Binding receiveMaterialBinding(TopicExchange orderExchange, Queue materialServOrders) {
+        return BindingBuilder.bind(materialServOrders).to(orderExchange).with("orders.materials.serv");
+    }
+
+    @Bean
+    Binding sendMaterialBinding(TopicExchange orderExchange, Queue materialShopOrders) {
+        return BindingBuilder.bind(materialShopOrders).to(orderExchange).with("orders.materials.shop");
     }
 }

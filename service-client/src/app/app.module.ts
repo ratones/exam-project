@@ -23,6 +23,8 @@ import { VehicleOrdersComponent } from './components/vehicle-orders/vehicle-orde
 import { OrderDeficienciesComponent } from './components/order-deficiencies/order-deficiencies.component';
 import { OrderListComponent } from './pages/order-list/order-list.component';
 import { OrderDetailsComponent } from './pages/order-details/order-details.component';
+import { OrderStatusPipe } from './pipes/order-status.pipe';
+import { ShopOrdersComponent } from './pages/shop-orders/shop-orders.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { OrderDetailsComponent } from './pages/order-details/order-details.compo
     VehicleOrdersComponent,
     OrderDeficienciesComponent,
     OrderListComponent,
-    OrderDetailsComponent
+    OrderDetailsComponent,
+    OrderStatusPipe,
+    ShopOrdersComponent
   ],
   imports: [
     BrowserModule,

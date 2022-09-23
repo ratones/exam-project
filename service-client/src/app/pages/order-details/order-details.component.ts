@@ -11,7 +11,9 @@ import { Observable } from 'rxjs';
 })
 export class OrderDetailsComponent implements OnInit {
 
-  order:ServiceOrder = {}
+  order:ServiceOrder = {
+    notes:''
+  };
 
   constructor(private service:RepairService, activeRoute:ActivatedRoute) {
     activeRoute.params.subscribe(p =>{
@@ -56,8 +58,18 @@ export class OrderDetailsComponent implements OnInit {
       });
     }
   }
+
   sendMaterialsOrder(){
-    this.order.status = 'waitingMaterials'
+    this.order.status = 'partsOrdered'
+    if(this.order.id){
+      this.service.updateOrder(this.order.id, this.order).subscribe((data:any) => {
+        this.order = data;
+      });
+    }
+  }
+
+  finalizeOrder(){
+    this.order.status = 'closed'
     if(this.order.id){
       this.service.updateOrder(this.order.id, this.order).subscribe((data:any) => {
         this.order = data;

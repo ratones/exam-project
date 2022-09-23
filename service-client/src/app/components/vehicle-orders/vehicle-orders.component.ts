@@ -1,6 +1,6 @@
 import { Vehicle } from './../../services/vehicle.service';
 import { VehicleOrder, OrdersService, Deficiency } from './../../services/orders.service';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import notify from 'devextreme/ui/notify';
 import { DxDataGridComponent } from 'devextreme-angular';
 
@@ -9,7 +9,7 @@ import { DxDataGridComponent } from 'devextreme-angular';
   templateUrl: './vehicle-orders.component.html',
   styleUrls: ['./vehicle-orders.component.scss']
 })
-export class VehicleOrdersComponent implements OnInit, OnChanges {
+export class VehicleOrdersComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   vehicle!:Vehicle | null | undefined;
@@ -25,16 +25,28 @@ export class VehicleOrdersComponent implements OnInit, OnChanges {
     { id: 'sent', text: 'SENT' },
     { id: 'partsReceived', text: 'PARTS Received' },
     { id: 'vehicleReceived', text: 'VEHICLE RECEPTION' },
-    { id: 'waitingMaterials', text: 'WAITING PARTS' },
+    { id: 'partsOrdered', text: 'WAITING PARTS' },
   ]
 
   @ViewChild("grid") grid!:DxDataGridComponent
   isSendingOrder!: boolean;
+  stompClient: any;
 
   constructor(private service:OrdersService) {
     this.sendOrder = this.sendOrder.bind(this)
     this.saveOrder = this.saveOrder.bind(this)
     this.cancelEdit = this.cancelEdit.bind(this)
+    this.stompClient = service.getSocket();
+    this.stompClient.connect({}, () => {
+      console.log("WS connected");
+      this.stompClient.subscribe("/topic/msg", (msg:any) => {
+        console.log("message received " + msg);
+        this.refreshData();
+      })
+    })
+  }
+  ngOnDestroy(): void {
+    //this.stompClient.disconnect()
   }
 
   ngOnChanges(changes: SimpleChanges): void {

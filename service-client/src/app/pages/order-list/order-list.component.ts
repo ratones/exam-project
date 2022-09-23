@@ -13,9 +13,18 @@ export class OrderListComponent implements OnInit {
   serviceType!:string
 
   orders:ServiceOrder[] = []
+  stompClient: any;
 
   constructor(private activeRoute:ActivatedRoute, private service:RepairService, private router:Router) {
     this.viewDetails = this.viewDetails.bind(this);
+    this.stompClient = service.getSocket();
+    this.stompClient.connect({}, () => {
+      console.log("WS connected");
+      this.stompClient.subscribe("/topic/srvorder", (msg:any) => {
+        console.log("message received " + msg);
+        this.refreshData();
+      })
+    })
   }
 
   ngOnInit(): void {

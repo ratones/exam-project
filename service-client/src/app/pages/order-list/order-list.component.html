@@ -5,12 +5,15 @@
       <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
 
       <dxi-column dataField="orderNo"></dxi-column>
-      <dxi-column dataField="status"></dxi-column>
+      <dxi-column dataField="status" [cellTemplate]="'statusCell'"></dxi-column>
       <dxi-column dataField="orderDate" dataType="date"></dxi-column>
       <dxi-column dataField="vehicleVin"></dxi-column>
       <dxi-column type="buttons" [width]="110">
         <dxi-button icon="edit" [onClick]="viewDetails"></dxi-button>
       </dxi-column>
+      <div *dxTemplate="let data of 'statusCell'">
+        {{data.data.status | orderStatus}}
+    </div>
     </dx-data-grid>
   </div>
 </div>

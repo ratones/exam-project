@@ -21,6 +21,7 @@
 		<module>vehicle-provider</module>
 		<module>vehicle-service</module>
         <module>data-exchange</module>
+		<module>vehicle-shop</module>
     </modules>
 	<dependencies>
 	</dependencies>

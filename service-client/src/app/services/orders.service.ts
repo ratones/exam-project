@@ -2,6 +2,8 @@ import { Vehicle } from './vehicle.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import * as SockJS from 'sockjs-client';
+import * as Stomp from '@stomp/stompjs';
 
 export interface VehicleOrder{
   id:number,
@@ -51,6 +53,11 @@ export class OrdersService {
 
   getOrderDeficiencies(orderId:number):Observable<Deficiency[]>{
     return this.http.get<Deficiency[]>(`${BASE_URL}/orders/deficiencies/${orderId}`)
+  }
+
+  getSocket(){
+    const socket = new SockJS('http://localhost:8081/gkz-stomp-endpoint');
+    return Stomp.Stomp.over(socket);
   }
 
 }

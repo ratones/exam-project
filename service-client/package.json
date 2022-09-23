@@ -1,7 +1,7 @@
 {
   "name": "signer-client",
   "version": "2.0.1",
-  "main":"startup.js",
+  "main": "startup.js",
   "node-remote": "*://*",
   "scripts": {
     "ng": "ng",
@@ -24,12 +24,17 @@
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
     "@handsontable/angular": "^10.0.0",
+    "@stomp/stompjs": "^6.1.2",
     "devextreme": "^21.2",
     "devextreme-angular": "^21.2",
     "devextreme-schematics": "^1.2.21",
     "handsontable": "^10.0.0",
     "rxjs": "~6.6.0",
+    "sockjs": "^0.3.24",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "tslib": "^2.3.0",
+    "webstomp": "^0.0.10",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -38,6 +43,8 @@
     "@angular/compiler-cli": "~12.2.0",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
+    "@types/sockjs-client": "^1.5.1",
+    "@types/stompjs": "^2.3.5",
     "devextreme-cli": "latest",
     "devextreme-themebuilder": "^21.2",
     "jasmine-core": "~3.8.0",
@@ -48,12 +55,12 @@
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.3.5"
   },
-  "window":{
+  "window": {
     "width": 900,
     "height": 600,
     "min_width": 900,
     "min_height": 600,
-    "icon":"signer.png"
+    "icon": "signer.png"
   },
   "chromium-args": "--child-clean-exit --ignore-certificate-errors"
 }

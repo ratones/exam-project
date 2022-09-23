@@ -2,13 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import * as SockJS from 'sockjs-client';
+import * as Stomp from '@stomp/stompjs';
+
 export interface ServiceOrder{
   id?:string,
   orderDate?:Date,
   category?:string,
   status?:string,
   dateCompleted?:Date,
-  notes?:string
+  notes:string
   vehicleId?:number,
   vehicleVin?:string,
   orderNo?:number
@@ -42,5 +45,10 @@ export class RepairService {
 
   updateOrder(id:string, order:ServiceOrder){
     return this.http.put<ServiceOrder>(`${BASE_URL}/orders/${id}`, order);
+  }
+
+  getSocket(){
+    const socket = new SockJS('http://localhost:8087/gkz-stomp-endpoint');
+    return Stomp.Stomp.over(socket);
   }
 }

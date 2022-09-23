@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuardService } from './shared/services';
 import { HomeComponent } from './pages/home/home.component';
 import { VehicleListComponent } from './pages/vehicle-list/vehicle-list.component';
+import { ShopOrdersComponent } from './pages/shop-orders/shop-orders.component';
 
 
 
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path:'order/:id',
     component:OrderDetailsComponent
+  },
+  {
+    path:'shop',
+    component:ShopOrdersComponent
   },
   {
     path: '**',

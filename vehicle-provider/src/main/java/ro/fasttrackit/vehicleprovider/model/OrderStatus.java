@@ -3,7 +3,7 @@ package ro.fasttrackit.vehicleprovider.model;
 public enum OrderStatus {
     open,
     vehicleReceived,
-    waitingMaterials,
+    partsOrdered,
     partsReceived,
     closed,
     sent

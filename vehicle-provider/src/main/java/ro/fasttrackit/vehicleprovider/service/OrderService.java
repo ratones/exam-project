@@ -1,8 +1,10 @@
 package ro.fasttrackit.vehicleprovider.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.WeakCacheKey;
 import org.springframework.stereotype.Service;
 import ro.fasttrackit.vehicleprovider.message.MessageSender;
+import ro.fasttrackit.vehicleprovider.message.WebSocketSender;
 import ro.fasttrackit.vehicleprovider.model.Deficiencies;
 import ro.fasttrackit.vehicleprovider.model.OrderStatus;
 import ro.fasttrackit.vehicleprovider.model.ServiceOrder;
@@ -18,6 +20,7 @@ public class OrderService {
     private final ServiceOrderRepository repository;
     private final DeficienciesRepository deficienciesRepository;
     private final MessageSender sender;
+
     public List<ServiceOrder> getVehicleOrder(Integer id) {
         return repository.findByVehicleId(id);
     }

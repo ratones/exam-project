@@ -14,4 +14,8 @@ public class MessageSender {
     public void sendOrderToProvider(OrderEntity order){
         rabbitTemplate.convertAndSend("order-exchange", "orders.repair", mapper.toApi(order));
     }
+
+    public void sendOrderToShop(OrderEntity order){
+        rabbitTemplate.convertAndSend("order-exchange", "orders.materials.shop", mapper.fromEntityToShop(order));
+    }
 }

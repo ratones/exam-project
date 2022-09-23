@@ -8,12 +8,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import ro.fasttrackit.vehicleprovider.model.Vehicle;
 import ro.fasttrackit.vehicleprovider.repository.VehicleRepository;
 
 import java.util.List;
 
 @SpringBootApplication
+@EnableWebSocket
 public class VehicleProviderApplication {
 
 	public static void main(String[] args) {
@@ -26,7 +28,8 @@ public class VehicleProviderApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("*")
+						.allowedOrigins("http://localhost:4444")
+						.allowCredentials(true)
 						.allowedMethods("GET", "POST", "PUT","PATCH", "DELETE");
 			}
 		};

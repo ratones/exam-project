@@ -1,0 +1,13 @@
+<div class="content-block">
+  <div class="dx-card responsive-paddings">
+    <dx-data-grid
+      keyExpr="id" [dataSource]="orders" [showBorders]="true"
+    >
+    <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+    <dxi-column dataField="orderNo"></dxi-column>
+    <dxi-column dataField="vehicleVin"></dxi-column>
+    <dxi-column dataField="category"></dxi-column>
+    <dxi-column dataField="status"></dxi-column>
+    </dx-data-grid>
+  </div>
+</div>

@@ -9,4 +9,5 @@ public class MaterialsEntity {
     private String vehicleVin;
     private String details;
     private String category;
+    private boolean received;
 }

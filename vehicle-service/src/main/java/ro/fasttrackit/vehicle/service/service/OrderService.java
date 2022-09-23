@@ -6,6 +6,7 @@ import ro.fasttrackit.vehicle.service.messages.MessageSender;
 import ro.fasttrackit.vehicle.service.model.OrderEntity;
 import ro.fasttrackit.vehicle.service.repository.OrdersRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,10 +29,18 @@ public class OrderService {
 
     public OrderEntity updateOrder(String id, OrderEntity order) {
         OrderEntity current = repository.findById(id).orElseThrow(() -> new RuntimeException("Could not find record with id " + id));
-        if(current.getStatus() != order.getStatus()){
-            // send message to queue
+        if(order.getStatus().equalsIgnoreCase("closed")){
+            order.setDateCompleted(new Date());
+        }
+        if(!current.getStatus().equalsIgnoreCase(order.getStatus())){
+            // send message to provider
             messageSender.sendOrderToProvider(order);
         }
+        if(order.getStatus().equalsIgnoreCase("partsOrdered")){
+            // send message to shop
+            messageSender.sendOrderToShop(order);
+        }
+
         return repository.save(order);
     }
 }

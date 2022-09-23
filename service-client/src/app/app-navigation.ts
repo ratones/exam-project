@@ -25,7 +25,7 @@ export const navigation = [
   {
     id: 4,
     text: 'Shop',
-    path: '/',
+    path: '/shop',
     icon: 'list-alt',
   },
 ];

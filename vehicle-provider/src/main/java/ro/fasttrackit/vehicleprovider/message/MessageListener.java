@@ -15,10 +15,13 @@ public class MessageListener {
     private final IOrderMapper mapper;
     private final OrderService service;
 
+    private final WebSocketSender webSocketSender;
+
     @RabbitListener(queues = "repair-orders")
     public void consumeMessageFromQueue(OrderDTO order) {
         ServiceOrder orderEntity = mapper.toEntity(order);
         System.out.println("Message Received from queue: " + orderEntity.toString() );
         service.updateOrder(orderEntity.getId(),orderEntity);
+        webSocketSender.send();
     }
 }
