@@ -10,16 +10,25 @@ import { Observable } from 'rxjs';
   styleUrls: ['./order-details.component.scss']
 })
 export class OrderDetailsComponent implements OnInit {
-
+  orderId!:string;
   order:ServiceOrder = {
     notes:''
   };
+  stompClient: any;
 
   constructor(private service:RepairService, activeRoute:ActivatedRoute) {
     activeRoute.params.subscribe(p =>{
-      service.getOrder(p.id).subscribe((data:any) => {
-        this.order = data
-      })
+      this.orderId = p.id;
+      this.getOrder()
+    })
+    service.messageBroker.subscribe(() => {
+      this.getOrder()
+    })
+  }
+
+  getOrder(){
+    this.service.getOrder(this.orderId).subscribe((data:any) => {
+      this.order = data
     })
   }
 
@@ -75,5 +84,22 @@ export class OrderDetailsComponent implements OnInit {
         this.order = data;
       });
     }
+  }
+
+  allowEditParts():boolean{
+    let result = false
+    if(this.order.status && ['vehicleReceived'].indexOf(this.order.status) >= 0){
+      result = true
+    }
+    return result;
+
+  }
+
+  allowFinalize():boolean{
+    let result = false
+    if(this.order.status && ['open','partsOrdered', 'closed'].indexOf(this.order.status) == -1){
+      result = true
+    }
+    return result;
   }
 }

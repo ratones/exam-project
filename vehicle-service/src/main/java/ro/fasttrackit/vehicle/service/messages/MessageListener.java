@@ -30,6 +30,7 @@ public class MessageListener {
     public void consumeMessageFromQueue(MaterialOrderDTO order) {
         OrderEntity orderEntity = mapper.toEntityFromShop(order);
         System.out.println("Message Received from queue: " + orderEntity.toString() );
-        service.insertOrder(orderEntity);
+        service.updateOrder(orderEntity.getId(),orderEntity);
+        webSocketSender.send();
     }
 }

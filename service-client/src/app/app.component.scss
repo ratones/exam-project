@@ -1,3 +1,7 @@
 :host {
   @import "../themes/generated/variables.base.scss";
+
+  .app-toolbar{
+    background-color: #eee;
+  }
 }

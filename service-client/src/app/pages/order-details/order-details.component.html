@@ -26,16 +26,16 @@
         <div class="dx-fieldset-header">Order Parts and Materials</div>
         <dx-button type="primary" class="spacer-top" text="Add" (onClick)="addMaterials()" *ngIf="order.status == 'vehicleReceived'"></dx-button>
         <div class="dx-field spacer-bottom" *ngFor="let item of order.materials">
-          <dx-select-box class="dx-field-value spacer-left" label="Category" labelMode="floating" [readOnly]="order.status == 'partsOrdered'"  [(value)]="item.category" [dataSource]="['Body', 'Electrics','Mechanics']"></dx-select-box>
-          <dx-text-box class="dx-field-value spacer-left" label="Name" labelMode="floating" [readOnly]="order.status == 'partsOrdered'"  [(value)]="item.name"></dx-text-box>
-          <dx-text-box class="dx-field-value spacer-left" label="Details" labelMode="floating" [readOnly]="order.status == 'partsOrdered'" [(value)]="item.details"></dx-text-box>
-          <dx-button type="danger" icon="trash" (onClick)="deleteMaterials(item)" *ngIf="order.status == 'vehicleReceived'"></dx-button>
+          <dx-select-box class="dx-field-value spacer-left" label="Category" labelMode="floating" [readOnly]="!allowEditParts()"  [(value)]="item.category" [dataSource]="['Body', 'Electrics','Mechanics']"></dx-select-box>
+          <dx-text-box class="dx-field-value spacer-left" label="Name" labelMode="floating" [readOnly]="!allowEditParts()"  [(value)]="item.name"></dx-text-box>
+          <dx-text-box class="dx-field-value spacer-left" label="Details" labelMode="floating" [readOnly]="!allowEditParts()" [(value)]="item.details"></dx-text-box>
+          <dx-button type="danger" icon="trash" (onClick)="deleteMaterials(item)" *ngIf="allowEditParts()"></dx-button>
         </div>
-        <dx-button type="primary" class="spacer-top spacer-right" text="Save" *ngIf="order.materials && order.materials.length > 0 && order.status == 'vehicleReceived'" (onClick)="saveMaterialsOrder()"></dx-button>
-        <dx-button type="default" class="spacer-top spacer-left" text="Send" *ngIf="order.materials && order.materials.length > 0 && order.status == 'vehicleReceived'" (onClick)="sendMaterialsOrder()"></dx-button>
+        <dx-button type="primary" class="spacer-top spacer-right" text="Save" *ngIf="order.materials && order.materials.length > 0 && allowEditParts()" (onClick)="saveMaterialsOrder()"></dx-button>
+        <dx-button type="default" class="spacer-top spacer-left" text="Send" *ngIf="order.materials && order.materials.length > 0 && allowEditParts()" (onClick)="sendMaterialsOrder()"></dx-button>
       </div>
       <div class="dx-fieldset" id="notes-container">
-        <div class="dx-fieldset-header">Order completed</div>
+        <div class="dx-fieldset-header">Order completion</div>
         <div class="dx-field">
           <div class="dx-field-label">Notes</div>
           <dx-text-area
@@ -49,7 +49,7 @@
           <div class="dx-field-label">Closed date</div>
           <div class="dx-field-value-static">{{order.dateCompleted | date:'dd.MM.yyyy' }}</div>
         </div>
-        <dx-button [visible]="order.status != 'closed'" type="success" text="Finalize" (onClick)="finalizeOrder()"></dx-button>
+        <dx-button [visible]="allowFinalize()" type="success" text="Finalize" (onClick)="finalizeOrder()"></dx-button>
       </div>
     </div>
   </div>

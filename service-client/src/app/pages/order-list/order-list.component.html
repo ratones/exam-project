@@ -1,6 +1,6 @@
 <div class="content-block">
   <div class="dx-card responsive-paddings">
-    <p>order-list works! {{serviceType}}</p>
+    <p>Service Orders for category: {{serviceType | uppercase}}</p>
     <dx-data-grid keyExpr="id" [dataSource]="orders" [showBorders]="true">
       <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
 
@@ -14,6 +14,15 @@
       <div *dxTemplate="let data of 'statusCell'">
         {{data.data.status | orderStatus}}
     </div>
+    <dxo-toolbar>
+      <dxi-item location="before">
+        <div *dxTemplate>
+          <dx-button icon="refresh" (onClick)="refreshData()"> </dx-button>
+        </div>
+      </dxi-item>
+      <dxi-item name="addRowButton" location="after"></dxi-item>
+      <dxi-item name="searchPanel"></dxi-item>
+    </dxo-toolbar>
     </dx-data-grid>
   </div>
 </div>

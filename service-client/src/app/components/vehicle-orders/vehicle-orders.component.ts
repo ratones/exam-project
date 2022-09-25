@@ -23,9 +23,10 @@ export class VehicleOrdersComponent implements OnInit, OnChanges, OnDestroy {
     { id: 'open', text: 'OPEN' },
     { id: 'closed', text: 'CLOSED' },
     { id: 'sent', text: 'SENT' },
-    { id: 'partsReceived', text: 'PARTS Received' },
+    { id: 'partsReceived', text: 'PARTS RECEIVED' },
     { id: 'vehicleReceived', text: 'VEHICLE RECEPTION' },
     { id: 'partsOrdered', text: 'WAITING PARTS' },
+    { id: 'partsDelivered', text: 'PARTS DELIVERED' },
   ]
 
   @ViewChild("grid") grid!:DxDataGridComponent
@@ -36,13 +37,8 @@ export class VehicleOrdersComponent implements OnInit, OnChanges, OnDestroy {
     this.sendOrder = this.sendOrder.bind(this)
     this.saveOrder = this.saveOrder.bind(this)
     this.cancelEdit = this.cancelEdit.bind(this)
-    this.stompClient = service.getSocket();
-    this.stompClient.connect({}, () => {
-      console.log("WS connected");
-      this.stompClient.subscribe("/topic/msg", (msg:any) => {
-        console.log("message received " + msg);
-        this.refreshData();
-      })
+    service.messageBroker.subscribe(() => {
+      this.refreshData()
     })
   }
   ngOnDestroy(): void {

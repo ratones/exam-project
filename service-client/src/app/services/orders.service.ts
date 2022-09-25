@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Vehicle } from './vehicle.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -29,7 +30,19 @@ const BASE_URL = 'http://localhost:8081'
 })
 export class OrdersService {
 
-  constructor(private http:HttpClient) { }
+  public messageBroker:BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date())
+
+  constructor(private http:HttpClient) {
+    const socket = new SockJS('http://localhost:8081/gkz-stomp-endpoint');
+    let stompClient = Stomp.Stomp.over(socket);
+    stompClient.connect({}, () => {
+      console.log("WS connected");
+      stompClient.subscribe("/topic/msg", (msg:any) => {
+        console.log("message received " + msg);
+        this.messageBroker.next(new Date())
+      })
+    })
+  }
 
   getVehicleOrders(vehicleId:number):Observable<VehicleOrder[]>{
     return this.http.get<VehicleOrder[]>(`${BASE_URL}/orders/byVehicleId/${vehicleId}`)
@@ -53,11 +66,6 @@ export class OrdersService {
 
   getOrderDeficiencies(orderId:number):Observable<Deficiency[]>{
     return this.http.get<Deficiency[]>(`${BASE_URL}/orders/deficiencies/${orderId}`)
-  }
-
-  getSocket(){
-    const socket = new SockJS('http://localhost:8081/gkz-stomp-endpoint');
-    return Stomp.Stomp.over(socket);
   }
 
 }

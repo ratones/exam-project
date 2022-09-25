@@ -68,7 +68,7 @@ public class OrderMapper implements IOrderMapper {
         return MaterialsDTO.builder()
                 .category(mat.getCategory())
                 .details(mat.getDetails())
-                .name(mat.getDetails())
+                .name(mat.getName())
                 .build();
     }
 }

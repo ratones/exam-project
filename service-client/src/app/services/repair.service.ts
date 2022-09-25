@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -33,7 +34,19 @@ const BASE_URL = 'http://localhost:8087'
 })
 export class RepairService {
 
-  constructor(private http:HttpClient) { }
+  public messageBroker:BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date())
+
+  constructor(private http:HttpClient) {
+    const socket = new SockJS('http://localhost:8087/gkz-stomp-endpoint');
+    let stompClient =  Stomp.Stomp.over(socket);
+    stompClient.connect({}, () => {
+      console.log("WS connected");
+      stompClient.subscribe("/topic/srvorder", (msg:any) => {
+        console.log("message received " + msg);
+        this.messageBroker.next(new Date())
+      })
+    })
+  }
 
   getOrders(serviceType:string):Observable<ServiceOrder[]>{
     return this.http.get<ServiceOrder[]>(`${BASE_URL}/orders?serviceType=${serviceType}`)
@@ -49,6 +62,7 @@ export class RepairService {
 
   getSocket(){
     const socket = new SockJS('http://localhost:8087/gkz-stomp-endpoint');
-    return Stomp.Stomp.over(socket);
+    let st =  Stomp.Stomp.over(socket);
+    return st;
   }
 }

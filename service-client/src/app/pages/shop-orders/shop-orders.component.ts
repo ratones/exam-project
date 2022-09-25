@@ -1,5 +1,6 @@
 import { ShopService } from './../../services/shop.service';
 import { Component, OnInit } from '@angular/core';
+import notify from 'devextreme/ui/notify';
 
 @Component({
   selector: 'app-shop-orders',
@@ -12,15 +13,10 @@ export class ShopOrdersComponent implements OnInit {
   stompClient: any;
 
   constructor(private service:ShopService) {
-    this.stompClient = service.getSocket();
-    this.stompClient.connect({}, () => {
-      console.log("WS connected");
-      this.stompClient.subscribe("/topic/shoporder", (msg:any) => {
-        console.log("message received " + msg);
-        this.refreshData();
-      })
-    })
     this.refreshData()
+    service.messageBroker.subscribe(() => {
+      this.refreshData()
+    })
   }
 
   ngOnInit(): void {
@@ -29,6 +25,29 @@ export class ShopOrdersComponent implements OnInit {
   refreshData(){
     this.service.getOrders().subscribe((data:any) => {
       this.orders = data
+    })
+  }
+
+  canCompleteOrder(order:any){
+    return order.parts.filter((p:any) => !p.available).length > 0
+          || order.status == 'partsDelivered'
+  }
+
+  saveOrder(ev:any, order:any){
+    console.log(ev);
+    ev.changes.forEach((element:any) => {
+      let crt = order.parts.find((p:any) => {return p.id == element.key})
+      crt.available = element.data.available
+    });
+    this.service.updateOrder(order.id, order).subscribe(() =>{
+      notify("Order saved!","success", 5000)
+    })
+  }
+
+  completeOrder(order:any){
+    order.status = 'partsDelivered'
+    this.service.updateOrder(order.id, order).subscribe(() =>{
+      notify("Order completed","success", 5000)
     })
   }
 

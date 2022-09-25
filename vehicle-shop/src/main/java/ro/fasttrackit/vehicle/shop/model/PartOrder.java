@@ -17,6 +17,7 @@ public class PartOrder {
     private String id;
     private String orderNo;
     private String vehicleVin;
+
     private List<Parts> parts;
     private String status;
 }

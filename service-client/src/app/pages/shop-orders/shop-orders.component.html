@@ -4,10 +4,60 @@
       keyExpr="id" [dataSource]="orders" [showBorders]="true"
     >
     <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
-    <dxi-column dataField="orderNo"></dxi-column>
-    <dxi-column dataField="vehicleVin"></dxi-column>
-    <dxi-column dataField="category"></dxi-column>
-    <dxi-column dataField="status"></dxi-column>
+    <dxi-column dataField="orderNo" ></dxi-column>
+    <dxi-column dataField="vehicleVin" ></dxi-column>
+    <dxi-column dataField="category" ></dxi-column>
+    <dxi-column dataField="status" [cellTemplate]="'statusCell'"></dxi-column>
+    <dxo-master-detail [enabled]="true" template="detail"></dxo-master-detail>
+
+    <div *dxTemplate="let data of 'statusCell'">
+      {{data.data.status | orderStatus}}
+  </div>
+
+    <div *dxTemplate="let order of 'detail'">
+      <dx-data-grid [dataSource]="order.data.parts" (onSaved)="saveOrder($event, order.data)" keyExpr="id">
+        <dxo-editing
+        mode="batch"
+        [allowUpdating]="order.data.status != 'partsDelivered'"
+        [startEditAction]="'click'"
+      >
+    </dxo-editing>
+        <dxi-column dataField="category" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="name" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="details" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="available"></dxi-column>
+        <dxo-toolbar>
+          <dxi-item location="before">
+            <div *dxTemplate>
+              Parts and materials for order {{order.data.orderNo}}
+              </div>
+          </dxi-item>
+          <dxi-item name="saveButton" location="after"></dxi-item>
+          <dxi-item location="after">
+            <div *dxTemplate>
+              <dx-button icon="upload" [disabled]="canCompleteOrder(order.data)" text="Finalize order" (onClick)="completeOrder(order.data)"> </dx-button>
+            </div>
+          </dxi-item>
+
+          <dxi-item name="searchPanel"></dxi-item>
+        </dxo-toolbar>
+      </dx-data-grid>
+    </div>
+
+    <dxo-toolbar>
+      <dxi-item location="before">
+        <div *dxTemplate>
+          <dx-button icon="refresh" (onClick)="refreshData()"> </dx-button>
+        </div>
+      </dxi-item>
+
+      <dxi-item location="before">
+        <div *dxTemplate>
+          Parts and materials orders
+          </div>
+      </dxi-item>
+      <dxi-item name="searchPanel"></dxi-item>
+    </dxo-toolbar>
     </dx-data-grid>
   </div>
 </div>

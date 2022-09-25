@@ -19,7 +19,10 @@ export class AppComponent  {
         icon: 'menu',
         onClick: () => this.isDrawerOpen = !this.isDrawerOpen,
       },
-    }];
+    },{
+
+    }
+  ];
 
   navigationItems!:any
 
@@ -29,6 +32,7 @@ export class AppComponent  {
 
   constructor(private authService: AuthService, private screen: ScreenService, public appInfo: AppInfoService, private router:Router) {
     console.log(nav.navigation)
+    this.toggleDrawer = this.toggleDrawer.bind(this);
     this.navigationItems = nav.navigation
   }
 
@@ -40,9 +44,13 @@ export class AppComponent  {
     return this.appInfo.getVersion();
   }
 
+  toggleDrawer(){
+    this.isDrawerOpen = !this.isDrawerOpen
+  }
+
   onItemClick(ev:any){
-    console.log(ev)
-    this.router.navigateByUrl(ev.itemData.path);
+    if(ev.itemData.path)
+      this.router.navigateByUrl(ev.itemData.path);
   }
 
 }

@@ -1,4 +1,17 @@
-<dx-toolbar [items]="toolbarContent"> </dx-toolbar>
+<dx-toolbar class="app-toolbar">
+    <dxi-item
+    location="before"
+    widget="dxButton"
+    locateInMenu="auto"
+    [options]="{icon:'menu', onClick:toggleDrawer}"
+  >
+  </dxi-item>
+  <dxi-item location="center" widget="dxButton" locateInMenu="never">
+    <div *dxTemplate>
+      <div class="toolbar-label"><b>My Auto Service</b></div>
+    </div>
+  </dxi-item>
+</dx-toolbar>
 <dx-drawer
   [openedStateMode]="'shrink'"
   [position]="'left'"

@@ -16,6 +16,8 @@ export class OrderStatusPipe implements PipeTransform {
         return 'MATERIALS ORDERED';
       case 'partsReceived':
         return 'PARTS RECEIVED';
+      case 'partsDelivered':
+        return 'PARTS DELIVERED';
       case 'closed':
         return 'CLOSED';
       default:

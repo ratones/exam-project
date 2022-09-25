@@ -20,7 +20,7 @@ public class OrderController {
     }
 
     @PutMapping("{id}")
-    PartOrder updateOrder(@PathVariable String id, PartOrder order){
+    PartOrder updateOrder(@PathVariable String id, @RequestBody PartOrder order){
         return service.updateOrder(id, order);
     }
 

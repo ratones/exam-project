@@ -4,6 +4,7 @@ public enum OrderStatus {
     open,
     vehicleReceived,
     partsOrdered,
+    partsDelivered,
     partsReceived,
     closed,
     sent
