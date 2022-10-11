@@ -12,6 +12,7 @@ docker run -p 127.0.0.1:3306:3306  --name mariadb -e MARIADB_ROOT_PASSWORD=Passw
 
 connect to mariadb
 docker exec -it mariadb mariadb --user root -pPassword123!
+docker run -d --name mongo-serv -p 27017:27017 mongo
 
 create db
 create database vehicles;
