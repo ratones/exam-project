@@ -32,14 +32,12 @@ Entitatile trebuie sa retina si sa comunice informatii intre ele.
 
 ### Rulare aplicatie
 #### Baze de date si mesaje
-MongoDB:
-
+##### MongoDB:
 <code>
 docker run -d --name mongo-serv -p 27017:27017 mongo
 </code>
 
-MariaDB:
-
+##### MariaDB:
 <code>
 docker run -p 127.0.0.1:3306:3306  --name mariadb -e MARIADB_ROOT_PASSWORD=Password123! -d mariadb:latest
 <br>
@@ -48,15 +46,16 @@ docker exec -it mariadb mariadb --user root -pPassword123!
 create database vehicles;
 </code>
 
-RabbitMQ
-
+##### RabbitMQ
 <code>
 docker run -d --hostname my-autoserv-rabbit --name autoserv-rabbit -p 8082:15672 -p 5672:5672 rabbitmq:management
 </code>
+
 #### Backend
 Se pornesc proiectele vehicle-provider, vehicle-service si vehicle-shop
-### Frontend
+#### Frontend
 In proiectul service-client se ruleaza comanda
+
 <code>
 ng serve --port 4444
 </code>
